@@ -1,0 +1,4 @@
+/.env
+/apns-auth-key.p8
+/env
+/voip-service.pem

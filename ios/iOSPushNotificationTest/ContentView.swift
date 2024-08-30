@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  iOSPushNotificationTest
-//
-//  Created by Shota Ide on 2024/08/31.
-//
-
 import SwiftUI
 
 struct ContentView: View {

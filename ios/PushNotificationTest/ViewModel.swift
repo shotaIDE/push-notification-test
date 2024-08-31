@@ -1,21 +1,25 @@
 import Foundation
+import FirebaseCore
+import FirebaseMessaging
 import SwiftUI
 import CallKit
 import PushKit
-import FirebaseCore
 
 class ViewModel: NSObject, ObservableObject {
     let callModel = CallModel.shared
 }
 
-extension ViewModel: UIApplicationDelegate {
+extension ViewModel: UIApplicationDelegate, UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         setupFirebase()
         setupPushKit()
+        setupFirebaseMessaging(application: application)
         return true
     }
-    
+
     private func setupFirebase() {
+        print("[Firebase] Setup")
+
         FirebaseApp.configure()
     }
 
@@ -25,6 +29,32 @@ extension ViewModel: UIApplicationDelegate {
         let voipRegistry = PKPushRegistry(queue: nil)
         voipRegistry.delegate = self
         voipRegistry.desiredPushTypes = [.voIP]
+    }
+
+    func setupFirebaseMessaging(application: UIApplication) {
+
+        UNUserNotificationCenter.current().delegate = self
+
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: authOptions,
+            completionHandler: { _, _ in }
+        )
+
+        application.registerForRemoteNotifications()
+
+        Messaging.messaging().delegate = self
+
+        Messaging.messaging().token { token, error in
+            if let error = error {
+                print("[FCM] Error fetching registration token: \(error)")
+                return
+            }
+
+            if let token = token {
+                print("[FCM] Registration token: \(token)")
+            }
+        }
     }
 }
 
@@ -52,5 +82,11 @@ extension ViewModel: PKPushRegistryDelegate {
         } else {
             callModel.IncomingCall(true, displayText: "(none)")
         }
+    }
+}
+
+extension ViewModel: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        print("[FCM] Registration token: \(String(describing: fcmToken))")
     }
 }

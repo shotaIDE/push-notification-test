@@ -25,8 +25,8 @@ def _send_by_lib():
             'custom_data_key_1': 'custom_data_value_1',
         },
         notification=messaging.Notification(
-            title='Test Message',
-            body=f'This push notification was sent by requesting APNs directly at {current_datetime_string}',
+            title='Test Title (via FCM with Python)',
+            body=f'This user notification was sent at {current_datetime_string}',
         ),
         android=messaging.AndroidConfig(
             notification=messaging.AndroidNotification(

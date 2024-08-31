@@ -14,8 +14,8 @@ fi
 read -r -d '' payload <<-'EOF'
 {
     "aps": {
-        "title": "Test Message",
-        "body": "This push notification was sent by requesting APNs directly at TIME"
+        "title": "Test Title (via APNs with shell)",
+        "body": "This VoIP notification was sent at TIME"
     }
 }
 EOF

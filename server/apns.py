@@ -88,18 +88,15 @@ async def send_voip_push_notification():
     headers = {
         'authorization': f'bearer {token}',
         'apns-push-type': 'voip',
-        'apns-topic': f'{BUNDLE_ID}'
+        'apns-topic': f'{BUNDLE_ID}.voip'
     }
 
     current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
     payload = {
         'aps': {
-            "alert": {
-                "title": "Test Message",
-                "sound": "default",
-                "body": f"This push notification was sent by requesting APNs directly at {current_datetime}"
-            }
+            "title": "Test Message",
+            "body": f"This push notification was sent by requesting APNs directly at {current_datetime}"
         }
     }
 

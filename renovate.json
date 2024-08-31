@@ -1,6 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ]
+  "enabledManagers": ["pip_requirements", "pyenv"],
+  "extends": ["config:best-practices"],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "matchManagers": ["pip_requirements"],
+      "addLabels": ["python"]
+    },
+    {
+      "matchManagers": ["pyenv"],
+      "addLabels": ["python"]
+    }
+  ],
+  "prConcurrentLimit": 1,
+  "rangeStrategy": "pin",
+  "reviewers": ["shotaIDE"]
 }

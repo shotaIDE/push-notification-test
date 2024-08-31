@@ -5,7 +5,7 @@ source ./.env
 # --------------------
 # https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
 
-if [ USE_SANDBOX == 1 ]; then
+if [ "$USE_SANDBOX" = 1 ]; then
     ENDPOINT='https://api.sandbox.push.apple.com'
 else
     ENDPOINT='https://api.push.apple.com'

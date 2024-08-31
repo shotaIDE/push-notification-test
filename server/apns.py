@@ -27,7 +27,7 @@ def get_jwt_token():
 
 async def send_voip_push_notification(message):
     BUNDLE_ID = os.environ.get('BUNDLE_ID')
-    DEVICE_TOKEN = os.environ.get('VOIP_DEVICE_TOKEN')
+    DEVICE_TOKEN = os.environ.get('DEVICE_TOKEN')
     USE_SANDBOX = os.environ.get('USE_SANDBOX')
     if USE_SANDBOX == '1':
         TOKEN_URL = 'https://api.sandbox.push.apple.com/3/device/'
@@ -38,25 +38,28 @@ async def send_voip_push_notification(message):
     
     headers = {
         'authorization': f'bearer {token}',
-        'apns-push-type': 'voip',
-        'apns-topic': f'{BUNDLE_ID}.voip'
+        'apns-push-type': 'alert',
+        'apns-topic': f'{BUNDLE_ID}'
     }
     
     payload = {
         'aps': {
-            'title': 'Test Message',
-            'body': 'This push notification was sent by requesting APNs directly at TIME'
+            "alert": {
+                "title": "Test Message",
+                "sound": "default",
+                "body": "This push notification was sent by requesting APNs directly at TIME"
+            }
         }
     }
 
     url = f'{TOKEN_URL}{DEVICE_TOKEN}'
     
-    client = httpx.AsyncClient(http2=True)
-    response = await client.post(
-        url,
-        headers=headers,
-        data=payload
-    )
+    async with httpx.AsyncClient(http2=True) as client:
+        response = await client.post(
+            url,
+            headers=headers,
+            json=payload
+        )
 
     return response
 

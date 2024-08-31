@@ -1,12 +1,14 @@
 # coding: utf-8
 
 import asyncio
+import os
 from datetime import datetime
 from pathlib import Path
-import jwt
 from time import time
-import os
+
 import httpx
+import jwt
+
 
 # https://developer.apple.com/documentation/usernotifications/establishing-a-token-based-connection-to-apns
 def get_jwt_token():
@@ -23,11 +25,14 @@ def get_jwt_token():
         'iss': TEAM_ID,
         'iat': time()
     }
-    
-    token = jwt.encode(payload, private_key, algorithm='ES256', headers=headers)
+
+    token = jwt.encode(payload, private_key,
+                       algorithm='ES256', headers=headers)
     return token
 
 # https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
+
+
 async def send_user_notification():
     print('Sending user notification...')
 
@@ -40,7 +45,7 @@ async def send_user_notification():
         TOKEN_URL = 'https://api.push.apple.com/3/device/'
 
     token = get_jwt_token()
-    
+
     headers = {
         'authorization': f'bearer {token}',
         'apns-push-type': 'alert',
@@ -48,7 +53,7 @@ async def send_user_notification():
     }
 
     current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    
+
     payload = {
         'aps': {
             'alert': {
@@ -60,7 +65,7 @@ async def send_user_notification():
     }
 
     url = f'{TOKEN_URL}{DEVICE_TOKEN}'
-    
+
     async with httpx.AsyncClient(http2=True) as client:
         response = await client.post(
             url,
@@ -84,7 +89,7 @@ async def send_voip_push_notification():
         TOKEN_URL = 'https://api.push.apple.com/3/device/'
 
     token = get_jwt_token()
-    
+
     headers = {
         'authorization': f'bearer {token}',
         'apns-push-type': 'voip',
@@ -92,7 +97,7 @@ async def send_voip_push_notification():
     }
 
     current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    
+
     payload = {
         'aps': {
             'title': 'Test Title (via APNs with Python)',
@@ -101,7 +106,7 @@ async def send_voip_push_notification():
     }
 
     url = f'{TOKEN_URL}{DEVICE_TOKEN}'
-    
+
     async with httpx.AsyncClient(http2=True) as client:
         response = await client.post(
             url,

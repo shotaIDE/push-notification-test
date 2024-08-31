@@ -1,17 +1,19 @@
 # coding: utf-8
 
-from datetime import datetime, timedelta
 import os
+from datetime import datetime, timedelta
 
 import firebase_admin
 from firebase_admin import credentials, messaging
 
 
 def _send_by_lib():
-    SERVICE_ACCOUNT_KEY_JSON_FILE_PATH = os.environ.get('SERVICE_ACCOUNT_KEY_JSON_FILE_PATH')
+    SERVICE_ACCOUNT_KEY_JSON_FILE_PATH = os.environ.get(
+        'SERVICE_ACCOUNT_KEY_JSON_FILE_PATH')
     REGISTRATION_TOKEN = os.environ.get('REGISTRATION_TOKEN')
 
-    project_credentials = credentials.Certificate(SERVICE_ACCOUNT_KEY_JSON_FILE_PATH)
+    project_credentials = credentials.Certificate(
+        SERVICE_ACCOUNT_KEY_JSON_FILE_PATH)
     firebase_admin.initialize_app(credential=project_credentials)
 
     registration_tokens = [REGISTRATION_TOKEN]

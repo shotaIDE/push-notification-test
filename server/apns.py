@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import asyncio
+from datetime import datetime
 from pathlib import Path
 import jwt
 from time import time
@@ -25,7 +26,7 @@ def get_jwt_token():
     token = jwt.encode(payload, private_key, algorithm='ES256', headers=headers)
     return token
 
-async def send_voip_push_notification(message):
+async def send_voip_push_notification():
     BUNDLE_ID = os.environ.get('BUNDLE_ID')
     DEVICE_TOKEN = os.environ.get('DEVICE_TOKEN')
     USE_SANDBOX = os.environ.get('USE_SANDBOX')
@@ -41,13 +42,15 @@ async def send_voip_push_notification(message):
         'apns-push-type': 'alert',
         'apns-topic': f'{BUNDLE_ID}'
     }
+
+    current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
     payload = {
         'aps': {
             "alert": {
                 "title": "Test Message",
                 "sound": "default",
-                "body": "This push notification was sent by requesting APNs directly at TIME"
+                "body": f"This push notification was sent by requesting APNs directly at {current_datetime}"
             }
         }
     }
@@ -64,11 +67,10 @@ async def send_voip_push_notification(message):
     return response
 
 if __name__ == "__main__":
-    message = "あなたの音声通話に関するメッセージ"
-
     loop = asyncio.get_event_loop()
     response = loop.run_until_complete(
-        send_voip_push_notification(message)
+        send_voip_push_notification()
     )
 
-    print(f"Response: {response.status_code}, Payload: {response.text}")
+    print(f"Status code: {response.status_code}")
+    print(f"Body: {response.text}")

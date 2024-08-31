@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct iOSPushNotificationTestApp: App {
+struct PushNotificationTestApp: App {
     @UIApplicationDelegateAdaptor(ViewModel.self) var viewModel
 
     var body: some Scene {

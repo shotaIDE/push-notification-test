@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7842A0CD2C82202600D78F00"
-               BuildableName = "iOSPushNotificationTest.app"
-               BlueprintName = "iOSPushNotificationTest"
-               ReferencedContainer = "container:iOSPushNotificationTest.xcodeproj">
+               BuildableName = "PushNotificationTest.app"
+               BlueprintName = "PushNotificationTest"
+               ReferencedContainer = "container:PushNotificationTest.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7842A0CD2C82202600D78F00"
-            BuildableName = "iOSPushNotificationTest.app"
-            BlueprintName = "iOSPushNotificationTest"
-            ReferencedContainer = "container:iOSPushNotificationTest.xcodeproj">
+            BuildableName = "PushNotificationTest.app"
+            BlueprintName = "PushNotificationTest"
+            ReferencedContainer = "container:PushNotificationTest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7842A0CD2C82202600D78F00"
-            BuildableName = "iOSPushNotificationTest.app"
-            BlueprintName = "iOSPushNotificationTest"
-            ReferencedContainer = "container:iOSPushNotificationTest.xcodeproj">
+            BuildableName = "PushNotificationTest.app"
+            BlueprintName = "PushNotificationTest"
+            ReferencedContainer = "container:PushNotificationTest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

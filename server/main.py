@@ -30,7 +30,7 @@ def send_voip_push_notification(message):
     DEVICE_TOKEN = os.environ.get('VOIP_DEVICE_TOKEN')
     USE_SANDBOX = os.environ.get('USE_SANDBOX')
     if USE_SANDBOX == '1':
-        TOKEN_URL = 'https://api.development.push.apple.com/3/device/'
+        TOKEN_URL = 'https://api.sandbox.push.apple.com/3/device/'
     else:
         TOKEN_URL = 'https://api.push.apple.com/3/device/'
 
@@ -39,25 +39,30 @@ def send_voip_push_notification(message):
     headers = {
         'content-type': 'application/json',
         'apns-topic': f'{BUNDLE_ID}.voip',
-        'authorization': f'Bearer {token}'
+        'apns-push-type': 'voip',
+        'authorization': f'bearer {token}'
     }
     
     payload = {
         'aps': {
-            'test': message,
-            # 'alert': message,
-            # 'sound': 'default',
-            # 'content-available': 1  # VoIP プッシュのために必要
+            'title': 'Test Message',
+            'body': 'This push notification was sent by requesting APNs directly at TIME'
         }
     }
 
     url = f'{TOKEN_URL}{DEVICE_TOKEN}'
     
-    response = httpx.post(
-        url,
-        headers=headers,
-        json=payload
-    )
+    try:
+        response = httpx.post(
+            url,
+            headers=headers,
+            data=payload
+        )
+        response.raise_for_status()
+    except httpx.HTTPStatusError as e:
+        print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
     
     return response
 

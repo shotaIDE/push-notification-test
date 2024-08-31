@@ -12,15 +12,31 @@ class ViewModel: NSObject, ObservableObject {
 extension ViewModel: UIApplicationDelegate, UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         setupFirebase()
+        setupPushNotification()
         setupPushKit()
         setupFirebaseMessaging(application: application)
         return true
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("[UserNotification] Received")
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
+        print("[UserNotification] Failed to register: \(error)")
     }
 
     private func setupFirebase() {
         print("[Firebase] Setup")
 
         FirebaseApp.configure()
+    }
+
+    private func setupPushNotification() {
+        print("[UserNotification] Setup")
+
+        // This line is need for User Notification and FCM
+        UIApplication.shared.registerForRemoteNotifications()
     }
 
     func setupPushKit() {
@@ -31,8 +47,7 @@ extension ViewModel: UIApplicationDelegate, UNUserNotificationCenterDelegate {
         voipRegistry.desiredPushTypes = [.voIP]
     }
 
-    func setupFirebaseMessaging(application: UIApplication) {
-
+    private func setupFirebaseMessaging(application: UIApplication) {
         UNUserNotificationCenter.current().delegate = self
 
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
@@ -41,20 +56,7 @@ extension ViewModel: UIApplicationDelegate, UNUserNotificationCenterDelegate {
             completionHandler: { _, _ in }
         )
 
-        application.registerForRemoteNotifications()
-
         Messaging.messaging().delegate = self
-
-        Messaging.messaging().token { token, error in
-            if let error = error {
-                print("[FCM] Error fetching registration token: \(error)")
-                return
-            }
-
-            if let token = token {
-                print("[FCM] Registration token: \(token)")
-            }
-        }
     }
 }
 
@@ -87,6 +89,15 @@ extension ViewModel: PKPushRegistryDelegate {
 
 extension ViewModel: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        print("[FCM] Registration token: \(String(describing: fcmToken))")
+        guard let fcmRegistrationToken = fcmToken else {
+            return
+        }
+        print("[FCM] Registration token: \(fcmRegistrationToken)")
+
+        guard let apnsTokenData = messaging.apnsToken else {
+            return
+        }
+        let apnsToken = apnsTokenData.map { String(format: "%02.2hhx", $0) }.joined()
+        print("[FCM] APNs token: \(apnsToken)")
     }
 }

@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# Reference: https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
-
 source ./.env
+
+# --------------------
+# https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
 
 if [ USE_SANDBOX == 1 ]; then
     ENDPOINT='https://api.sandbox.push.apple.com'
@@ -21,6 +22,9 @@ read -r -d '' payload <<-'EOF'
    }
 }
 EOF
+
+# --------------------
+# https://developer.apple.com/documentation/usernotifications/establishing-a-token-based-connection-to-apns
 
 base64() {
    openssl base64 -e -A | tr -- '+/' '-_' | tr -d =

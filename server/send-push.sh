@@ -5,7 +5,7 @@
 source ./.env
 
 if [ USE_SANDBOX == 1 ]; then
-    ENDPOINT='https://api.development.push.apple.com'
+    ENDPOINT='https://api.sandbox.push.apple.com'
 else
     ENDPOINT='https://api.push.apple.com'
 fi

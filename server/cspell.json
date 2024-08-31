@@ -3,5 +3,5 @@
     { "name": "dependency", "path": "./dictionary/dependency.txt" }
   ],
   "dictionaries": ["dependency"],
-  "enabledLanguageIds": ["python", "swift"]
+  "enabledLanguageIds": ["python", "shellscript"]
 }

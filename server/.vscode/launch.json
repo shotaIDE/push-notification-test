@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "User Notification by APNs",
+      "name": "User Notification via APNs",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/apns.py",
@@ -17,7 +17,7 @@
       }
     },
     {
-      "name": "VoIP Notification by APNs",
+      "name": "VoIP Notification via APNs",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/apns.py",
@@ -29,7 +29,7 @@
       }
     },
     {
-      "name": "User Notification by FCM",
+      "name": "User Notification via FCM",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/fcm.py",

@@ -51,10 +51,10 @@ async def send_user_notification():
     
     payload = {
         'aps': {
-            "alert": {
-                "title": "Test Message",
-                "sound": "default",
-                "body": f"This push notification was sent by requesting APNs directly at {current_datetime}"
+            'alert': {
+                'title': 'Test Title (via APNs with Python)',
+                'sound': 'default',
+                'body': f'This user notification was sent by requesting APNs directly at {current_datetime}'
             }
         }
     }
@@ -95,8 +95,8 @@ async def send_voip_push_notification():
     
     payload = {
         'aps': {
-            "title": "Test Message",
-            "body": f"This push notification was sent by requesting APNs directly at {current_datetime}"
+            'title': 'Test Title (via APNs with Python)',
+            'body': f'This VoIP notification was sent at {current_datetime}'
         }
     }
 
@@ -112,7 +112,7 @@ async def send_voip_push_notification():
     return response
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     VOIP_PUSH = os.environ.get('VOIP_PUSH')
 
     loop = asyncio.get_event_loop()
@@ -120,5 +120,5 @@ if __name__ == "__main__":
         send_voip_push_notification() if VOIP_PUSH == 'true' else send_user_notification()
     )
 
-    print(f"Status code: {response.status_code}")
-    print(f"Body: {response.text}")
+    print(f'Status code: {response.status_code}')
+    print(f'Body: {response.text}')

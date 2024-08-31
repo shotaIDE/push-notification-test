@@ -15,9 +15,9 @@ read -r -d '' payload <<-'EOF'
 {
    "aps": {
       "alert": {
-         "title": "Test Message",
+         "title": "Test Title (via APNs with shell)",
          "sound": "default",
-         "body": "This push notification was sent by requesting APNs directly at TIME"
+         "body": "This user push notification was sent at TIME"
       }
    }
 }

@@ -5,16 +5,31 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Send by APNs",
+      "name": "User Notification by APNs",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/apns.py",
       "console": "integratedTerminal",
       "justMyCode": true,
-      "envFile": "${workspaceFolder}/.env"
+      "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "VOIP_PUSH": "false"
+      }
     },
     {
-      "name": "Send by FCM",
+      "name": "VoIP Notification by APNs",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/apns.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "VOIP_PUSH": "true"
+      }
+    },
+    {
+      "name": "User Notification by FCM",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/fcm.py",

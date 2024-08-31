@@ -15,26 +15,25 @@ extension ViewModel: UIApplicationDelegate {
     }
 
     func setupPushKit() {
-        print("*** setupPushKit")
+        print("[PushKit] Setup")
         voipRegistry.delegate = self
         voipRegistry.desiredPushTypes = [.voIP]
-        print("*** setupPushKit End")
     }
 }
 
 extension ViewModel: PKPushRegistryDelegate {
     func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
-        print("*** pushRegistry: didUpdate pushCredentials")
+        print("[PushKit] Push credentials has been updated")
         let deviceToken = pushCredentials.token.map { String(format: "%02.2hhx", $0) }.joined()
-        print("*** device token: \(deviceToken)")
+        print("[PushKit] Device token for VoIP: \(deviceToken)")
     }
 
     func pushRegistry(_ registry: PKPushRegistry, didInvalidatePushTokenFor type: PKPushType) {
-        print("*** didInvalidatePushTokenFor")
+        print("[PushKit] didInvalidatePushTokenFor")
     }
 
     func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType) {
-        print("*** didReceiveIncomingPushWith")
+        print("[PushKit] didReceiveIncomingPushWith")
         let dictionary = payload.dictionaryPayload as NSDictionary
         let aps = dictionary["aps"] as! NSDictionary
         let alert = aps["alert"]

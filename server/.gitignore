@@ -1,5 +1,7 @@
 /.env*
 !/.env.example
+
 /apns-auth-key*.p8
 /env
+/firebase-admin_service-account-key*.json
 /voip-service.pem

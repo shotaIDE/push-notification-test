@@ -34,7 +34,6 @@ jwt="$header.$claims.$(sign $header.$claims)"
 
 time_str=$(date -Iseconds)
 curl --verbose \
-   --header "content-type: application/json" \
    --header "authorization: bearer $jwt" \
    --header "apns-push-type: voip" \
    --header "apns-topic: ${BUNDLE_ID}.voip" \

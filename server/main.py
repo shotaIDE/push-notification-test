@@ -37,10 +37,9 @@ def send_voip_push_notification(message):
     token = get_jwt_token()
     
     headers = {
-        'content-type': 'application/json',
-        'apns-topic': f'{BUNDLE_ID}.voip',
+        'authorization': f'bearer {token}',
         'apns-push-type': 'voip',
-        'authorization': f'bearer {token}'
+        'apns-topic': f'{BUNDLE_ID}.voip'
     }
     
     payload = {

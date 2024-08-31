@@ -75,12 +75,9 @@ extension ViewModel: PKPushRegistryDelegate {
 
         let dictionary = payload.dictionaryPayload as NSDictionary
         let aps = dictionary["aps"] as! NSDictionary
-        let alert = aps["alert"]
-        if let message = alert as? String {
-            callModel.IncomingCall(true, displayText: "\(message)")
-        } else {
-            callModel.IncomingCall(true, displayText: "(none)")
-        }
+        let title = aps["title"] as? String ?? "(No title)"
+
+        callModel.IncomingCall(true, title: title)
     }
 }
 

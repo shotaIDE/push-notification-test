@@ -5,10 +5,19 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run",
+      "name": "Send by APNs",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/main.py",
+      "program": "${workspaceFolder}/apns.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "Send by FCM",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/fcm.py",
       "console": "integratedTerminal",
       "justMyCode": true,
       "envFile": "${workspaceFolder}/.env"

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		780D15DA2C82FB6400A15FE6 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 780D15D92C82FB6400A15FE6 /* FirebaseMessaging */; };
+		780D15DC2C8306A700A15FE6 /* Data+HexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780D15DB2C8306A700A15FE6 /* Data+HexString.swift */; };
 		7842A0D22C82202600D78F00 /* PushNotificationTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7842A0D12C82202600D78F00 /* PushNotificationTestApp.swift */; };
 		7842A0D42C82202600D78F00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7842A0D32C82202600D78F00 /* ContentView.swift */; };
 		7842A0D62C82202700D78F00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7842A0D52C82202700D78F00 /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		780D15DB2C8306A700A15FE6 /* Data+HexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+HexString.swift"; sourceTree = "<group>"; };
 		7842A0CE2C82202600D78F00 /* PushNotificationTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PushNotificationTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7842A0D12C82202600D78F00 /* PushNotificationTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationTestApp.swift; sourceTree = "<group>"; };
 		7842A0D32C82202600D78F00 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				7842A0D32C82202600D78F00 /* ContentView.swift */,
 				7892E26E2C8221BF00A267B3 /* CallModel.swift */,
 				7892E26C2C82219E00A267B3 /* ViewModel.swift */,
+				780D15DB2C8306A700A15FE6 /* Data+HexString.swift */,
 				7842A0D52C82202700D78F00 /* Assets.xcassets */,
 				7842A0D72C82202700D78F00 /* Preview Content */,
 			);
@@ -170,6 +173,7 @@
 				7842A0D42C82202600D78F00 /* ContentView.swift in Sources */,
 				7892E26D2C82219E00A267B3 /* ViewModel.swift in Sources */,
 				7842A0D22C82202600D78F00 /* PushNotificationTestApp.swift in Sources */,
+				780D15DC2C8306A700A15FE6 /* Data+HexString.swift in Sources */,
 				7892E26F2C8221BF00A267B3 /* CallModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

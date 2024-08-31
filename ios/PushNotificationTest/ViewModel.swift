@@ -19,11 +19,15 @@ extension ViewModel: UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        // This method will not be called because Firebase intercepts the call via swizzle.
+        // To make this method to be called, we need disable `FirebaseAppDelegateProxyEnabled`.
         let deviceToken = deviceToken.toHexString()
         print("[UserNotification] Registered with device token: \(deviceToken)")
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
+        // This method will not be called because Firebase intercepts the call via swizzle.
+        // To make this method to be called, we need disable `FirebaseAppDelegateProxyEnabled`.
         print("[UserNotification] Failed to register: \(error)")
     }
 

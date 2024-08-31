@@ -4,7 +4,6 @@ import CallKit
 import PushKit
 
 class ViewModel: NSObject, ObservableObject {
-    let voipRegistry = PKPushRegistry(queue: .global())
     let callModel = CallModel.shared
 }
 
@@ -16,6 +15,8 @@ extension ViewModel: UIApplicationDelegate {
 
     func setupPushKit() {
         print("[PushKit] Setup")
+
+        let voipRegistry = PKPushRegistry(queue: nil)
         voipRegistry.delegate = self
         voipRegistry.desiredPushTypes = [.voIP]
     }
@@ -24,7 +25,9 @@ extension ViewModel: UIApplicationDelegate {
 extension ViewModel: PKPushRegistryDelegate {
     func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
         print("[PushKit] Push credentials has been updated")
+
         let deviceToken = pushCredentials.token.map { String(format: "%02.2hhx", $0) }.joined()
+
         print("[PushKit] Device token for VoIP: \(deviceToken)")
     }
 
@@ -34,6 +37,7 @@ extension ViewModel: PKPushRegistryDelegate {
 
     func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType) {
         print("[PushKit] didReceiveIncomingPushWith")
+
         let dictionary = payload.dictionaryPayload as NSDictionary
         let aps = dictionary["aps"] as! NSDictionary
         let alert = aps["alert"]

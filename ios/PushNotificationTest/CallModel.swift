@@ -32,10 +32,10 @@ final class CallModel: NSObject {
         }
     }
 
-    func IncomingCall(_ hasVideo: Bool = false, displayText: String) {
+    func IncomingCall(_ hasVideo: Bool = false, title: String) {
         uuid = UUID()
         let update = CXCallUpdate()
-        update.remoteHandle = CXHandle(type: .generic, value: displayText)
+        update.remoteHandle = CXHandle(type: .generic, value: title)
         update.hasVideo = hasVideo
         provider.reportNewIncomingCall(with: uuid, update: update) { error in
             if let error = error {

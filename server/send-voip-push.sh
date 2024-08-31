@@ -1,9 +1,11 @@
 #!/bin/bash
 
+# Reference: https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
+
 source ./.env
 
-if [ USE_SANDBOX == 1 ]; then
-    ENDPOINT='https://api.development.push.apple.com'
+if [ "$USE_SANDBOX" = 1 ]; then
+    ENDPOINT='https://api.sandbox.push.apple.com'
 else
     ENDPOINT='https://api.push.apple.com'
 fi
@@ -32,8 +34,8 @@ jwt="$header.$claims.$(sign $header.$claims)"
 
 time_str=$(date -Iseconds)
 curl --verbose \
-   --header "content-type: application/json" \
    --header "authorization: bearer $jwt" \
+   --header "apns-push-type: voip" \
    --header "apns-topic: ${BUNDLE_ID}.voip" \
    --data "${payload/TIME/$time_str}" \
    $ENDPOINT/3/device/$VOIP_DEVICE_TOKEN

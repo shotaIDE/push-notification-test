@@ -1,11 +1,11 @@
 # coding: utf-8
 
+import asyncio
 from pathlib import Path
 import jwt
 from time import time
 import os
 import httpx
-
 
 def get_jwt_token():
     PRIVATE_KEY_PATH = os.environ.get('APNS_AUTH_KEY_FILE_PATH')
@@ -25,7 +25,7 @@ def get_jwt_token():
     token = jwt.encode(payload, private_key, algorithm='ES256', headers=headers)
     return token
 
-def send_voip_push_notification(message):
+async def send_voip_push_notification(message):
     BUNDLE_ID = os.environ.get('BUNDLE_ID')
     DEVICE_TOKEN = os.environ.get('VOIP_DEVICE_TOKEN')
     USE_SANDBOX = os.environ.get('USE_SANDBOX')
@@ -51,21 +51,21 @@ def send_voip_push_notification(message):
 
     url = f'{TOKEN_URL}{DEVICE_TOKEN}'
     
-    try:
-        response = httpx.post(
-            url,
-            headers=headers,
-            data=payload
-        )
-        response.raise_for_status()
-    except httpx.HTTPStatusError as e:
-        print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")
-    
+    client = httpx.AsyncClient(http2=True)
+    response = await client.post(
+        url,
+        headers=headers,
+        data=payload
+    )
+
     return response
 
 if __name__ == "__main__":
     message = "あなたの音声通話に関するメッセージ"
-    response = send_voip_push_notification(message)
+
+    loop = asyncio.get_event_loop()
+    response = loop.run_until_complete(
+        send_voip_push_notification(message)
+    )
+
     print(f"Response: {response.status_code}, Payload: {response.text}")

@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import CallKit
 import PushKit
+import FirebaseCore
 
 class ViewModel: NSObject, ObservableObject {
     let callModel = CallModel.shared
@@ -9,8 +10,13 @@ class ViewModel: NSObject, ObservableObject {
 
 extension ViewModel: UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        setupFirebase()
         setupPushKit()
         return true
+    }
+    
+    private func setupFirebase() {
+        FirebaseApp.configure()
     }
 
     func setupPushKit() {

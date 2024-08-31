@@ -4,6 +4,7 @@ import CallKit
 import PushKit
 
 class ViewModel: NSObject, ObservableObject {
+    let voipRegistry = PKPushRegistry(queue: .global())
     let callModel = CallModel.shared
 }
 
@@ -15,9 +16,9 @@ extension ViewModel: UIApplicationDelegate {
 
     func setupPushKit() {
         print("*** setupPushKit")
-        let voipRegistry: PKPushRegistry = PKPushRegistry(queue: .main)
         voipRegistry.delegate = self
         voipRegistry.desiredPushTypes = [.voIP]
+        print("*** setupPushKit End")
     }
 }
 

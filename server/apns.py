@@ -87,11 +87,15 @@ async def send_voip_push_notification():
     DEVICE_TOKEN = os.environ.get('VOIP_DEVICE_TOKEN')
     USE_SANDBOX = os.environ.get('USE_SANDBOX')
     if USE_SANDBOX == '1':
-        TOKEN_URL = 'https://api.sandbox.push.apple.com/3/device/'
+        HOST = 'api.sandbox.push.apple.com'
     else:
-        TOKEN_URL = 'https://api.push.apple.com/3/device/'
+        HOST = 'api.push.apple.com'
 
     token = __get_jwt_token()
+
+    device_tokens = [
+        DEVICE_TOKEN
+    ]
 
     headers = {
         'authorization': f'bearer {token}',
@@ -108,25 +112,23 @@ async def send_voip_push_notification():
         }
     }
 
-    url = f'{TOKEN_URL}{DEVICE_TOKEN}'
-
     async with httpx.AsyncClient(http2=True) as client:
-        response = await client.post(
-            url,
-            headers=headers,
-            json=payload
-        )
+        for index, device_token in enumerate(device_tokens):
+            url = f'https://{HOST}/3/device/{device_token}'
 
-    return response
+            response = await client.post(
+                url,
+                headers=headers,
+                json=payload
+            )
+
+            print(f'#{index}: device token = {device_token}')
+            print(f'Status code: {response.status_code}')
 
 
 if __name__ == '__main__':
     VOIP_PUSH = os.environ.get('VOIP_PUSH')
 
-    loop = asyncio.get_event_loop()
-    response = loop.run_until_complete(
+    asyncio.run(
         send_voip_push_notification() if VOIP_PUSH == 'true' else send_user_notification()
     )
-
-    print(f'Status code: {response.status_code}')
-    print(f'Body: {response.text}')

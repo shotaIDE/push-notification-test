@@ -43,11 +43,15 @@ async def send_user_notification():
     DEVICE_TOKEN = os.environ.get('DEVICE_TOKEN')
     USE_SANDBOX = os.environ.get('USE_SANDBOX')
     if USE_SANDBOX == '1':
-        TOKEN_URL = 'https://api.sandbox.push.apple.com/3/device/'
+        HOST = 'api.sandbox.push.apple.com'
     else:
-        TOKEN_URL = 'https://api.push.apple.com/3/device/'
+        HOST = 'api.push.apple.com'
 
     token = __get_jwt_token()
+
+    device_tokens = [
+        DEVICE_TOKEN
+    ]
 
     headers = {
         'authorization': f'bearer {token}',
@@ -67,16 +71,22 @@ async def send_user_notification():
         }
     }
 
-    url = f'{TOKEN_URL}{DEVICE_TOKEN}'
-
     async with httpx.AsyncClient(http2=True) as client:
-        response = await client.post(
-            url,
-            headers=headers,
-            json=payload
-        )
+        for index, device_token in enumerate(device_tokens):
+            url = f'https://{HOST}/3/device/{device_token}'
 
-    return response
+            response = await client.post(
+                url,
+                headers=headers,
+                json=payload
+            )
+
+            padded_index = str(index).rjust(2, '0')
+            print(f'#{padded_index} device token = {device_token}')
+            print(
+                f'#{padded_index} response status code: '
+                f'{response.status_code}'
+            )
 
 
 # https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
@@ -122,8 +132,12 @@ async def send_voip_push_notification():
                 json=payload
             )
 
-            print(f'#{index}: device token = {device_token}')
-            print(f'Status code: {response.status_code}')
+            padded_index = str(index).rjust(2, '0')
+            print(f'#{padded_index} device token = {device_token}')
+            print(
+                f'#{padded_index} response status code: '
+                f'{response.status_code}'
+            )
 
 
 if __name__ == '__main__':

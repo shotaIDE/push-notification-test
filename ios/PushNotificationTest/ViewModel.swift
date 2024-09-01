@@ -40,7 +40,13 @@ extension ViewModel: UIApplicationDelegate {
     private func setupUserNotification(application: UIApplication) {
         print("[UserNotification] Setup")
 
-        // This line is need for User Notification and FCM
+        // Request push notification permission
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(
+          options: authOptions,
+          completionHandler: { _, _ in }
+        )
+
         application.registerForRemoteNotifications()
     }
 

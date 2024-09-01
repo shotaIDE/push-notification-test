@@ -11,7 +11,7 @@ import jwt
 
 
 # https://developer.apple.com/documentation/usernotifications/establishing-a-token-based-connection-to-apns
-def get_jwt_token():
+def __get_jwt_token():
     PRIVATE_KEY_PATH = os.environ.get('APNS_AUTH_KEY_FILE_PATH')
     APNS_KEY_ID = os.environ.get('APNS_AUTH_KEY_ID')
     TEAM_ID = os.environ.get('TEAM_ID')
@@ -26,9 +26,12 @@ def get_jwt_token():
         'iat': time()
     }
 
-    token = jwt.encode(payload, private_key,
-                       algorithm='ES256', headers=headers)
-    return token
+    return jwt.encode(
+        payload,
+        private_key,
+        algorithm='ES256',
+        headers=headers
+    )
 
 # https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
 
@@ -44,7 +47,7 @@ async def send_user_notification():
     else:
         TOKEN_URL = 'https://api.push.apple.com/3/device/'
 
-    token = get_jwt_token()
+    token = __get_jwt_token()
 
     headers = {
         'authorization': f'bearer {token}',
@@ -88,7 +91,7 @@ async def send_voip_push_notification():
     else:
         TOKEN_URL = 'https://api.push.apple.com/3/device/'
 
-    token = get_jwt_token()
+    token = __get_jwt_token()
 
     headers = {
         'authorization': f'bearer {token}',

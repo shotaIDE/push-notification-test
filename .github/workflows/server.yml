@@ -61,6 +61,8 @@ jobs:
           pip install --ignore-installed -r requirements.txt
       - name: Generate APNs auth key file
         run: echo "${{ secrets.APNS_AUTH_KEY_P8_BASE64 }}" | base64 -d > apns-auth-key_ide.p8
+      - name: Generate Firebase admin service account key JSON file
+        run: echo "${{ secrets.FIREBASE_ADMIN_SERVICE_ACCOUNT_KEY_JSON_BASE64 }}" | base64 -d > firebase-admin_service-account-key.json
       - name: Generate pytest environment ini file
         run: echo "${{ secrets.PYTEST_INI_BASE64 }}" | base64 -d > pytest.ini
       - name: Test

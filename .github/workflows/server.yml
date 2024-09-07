@@ -80,7 +80,6 @@ jobs:
         with:
           files: "**/*.{md,py,sh}"
           root: server/
-          config: server/cspell.json
   build-no-need:
     name: Test Server (no need)
     needs: check-impact

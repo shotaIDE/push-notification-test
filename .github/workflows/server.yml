@@ -1,0 +1,73 @@
+name: Server
+
+on:
+  pull_request:
+    branches:
+      - "main"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check-impact:
+    name: Check impact for Server
+    runs-on: ubuntu-latest
+    outputs:
+      has-changed-related-files: ${{ steps.check-related-files.outputs.any_changed == 'true' }}
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        with:
+          fetch-depth: 0
+      - name: Check related files
+        id: check-related-files
+        uses: tj-actions/changed-files@40853de9f8ce2d6cfdc73c1b96f14e22ba44aec4 # v45
+        with:
+          files: "server/**"
+  test:
+    name: Test Server
+    needs: check-impact
+    if: needs.check-impact.outputs.has-changed-related-files == 'true'
+    # Use the same version to the production runtime.
+    # https://cloud.google.com/functions/docs/concepts/execution-environment#python
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Get Python version
+        id: get-python-version
+        run: |
+          python_version="$(cat .python-version)"
+          echo "python-version=$python_version" >> $GITHUB_OUTPUT
+      - name: Set up Python
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
+        with:
+          python-version: ${{ steps.get-python-version.outputs.python-version }}
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --ignore-installed -r requirements.txt
+      - name: Generate pytest environment ini file
+        run: echo "${{ secrets.PYTEST_INI_BASE64 }}" | base64 -d > pytest.ini
+      - name: Test
+        run: pytest
+  build-no-need:
+    name: Test Server (no need)
+    needs: check-impact
+    if: needs.check-impact.outputs.has-changed-related-files == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip
+        run: echo "No changes in files related to Server, skipping."

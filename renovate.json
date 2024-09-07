@@ -6,11 +6,13 @@
   "packageRules": [
     {
       "matchManagers": ["pip_requirements"],
-      "addLabels": ["python"]
+      "addLabels": ["python"],
+      "automerge": true
     },
     {
       "matchManagers": ["pyenv"],
-      "addLabels": ["python"]
+      "addLabels": ["python"],
+      "automerge": true
     }
   ],
   "prConcurrentLimit": 1,

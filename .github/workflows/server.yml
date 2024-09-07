@@ -70,7 +70,7 @@ jobs:
       - name: Test
         run: pytest
   code-spell:
-    name: Spell check
+    name: Code spell
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -82,14 +82,14 @@ jobs:
       - uses: reviewdog/action-setup@3f401fe1d58fe77e10d665ab713057375e39b887 # v1
         with:
           reviewdog_version: latest
-      - name: Install Code Spell Checker
+      - name: Install CSpell
         run: npm install -g cspell
       - name: Check code spell
         run: cspell '**/*.{md,py,sh}' > cspell.log
       - name: Display code spell errors
         if: failure()
         run: cat cspell.log
-      - name: Run reviewdog for Code Spell Checker
+      - name: Run reviewdog
         if: failure()
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}

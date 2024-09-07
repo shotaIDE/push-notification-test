@@ -78,6 +78,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: streetsidesoftware/cspell-action@v6
         with:
+          files: "**/*.{md,py,sh}"
           root: server/
           config: server/cspell.json
   build-no-need:

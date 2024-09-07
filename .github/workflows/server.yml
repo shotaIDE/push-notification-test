@@ -79,7 +79,7 @@ jobs:
       - uses: streetsidesoftware/cspell-action@v6
         with:
           root: server/
-          config: server/
+          config: server/cspell.json
   build-no-need:
     name: Test Server (no need)
     needs: check-impact

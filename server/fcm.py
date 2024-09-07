@@ -7,7 +7,9 @@ import firebase_admin
 from firebase_admin import credentials, messaging
 
 
-def _send_by_lib():
+def send_user_notification():
+    print('Sending user notification...')
+
     SERVICE_ACCOUNT_KEY_JSON_FILE_PATH = os.environ.get(
         'SERVICE_ACCOUNT_KEY_JSON_FILE_PATH')
     REGISTRATION_TOKEN = os.environ.get('REGISTRATION_TOKEN')
@@ -28,7 +30,8 @@ def _send_by_lib():
         },
         notification=messaging.Notification(
             title='Test Title (via FCM with Python)',
-            body=f'This user notification was sent at {current_datetime_string}',
+            body=f'This user notification was sent at {
+                current_datetime_string}',
         ),
         android=messaging.AndroidConfig(
             notification=messaging.AndroidNotification(
@@ -46,17 +49,22 @@ def _send_by_lib():
 
     response = messaging.send_multicast(message)
 
-    print('{0} messages were sent successfully'.format(response.success_count))
+    print(f'{response.success_count} messages were sent successfully.')
 
     if response.failure_count > 0:
         responses = response.responses
-        failed_tokens = []
-        for idx, resp in enumerate(responses):
-            if not resp.success:
-                failed_tokens.append(registration_tokens[idx])
+        for index, response in enumerate(responses):
+            if not response.success:
+                padded_index = str(index).rjust(2, '0')
+                registration_token = registration_tokens[index]
+                error_code = response.exception.code
 
-        print('List of tokens that caused failures: {0}'.format(failed_tokens))
+                print(
+                    f'#{padded_index} '
+                    f'registration token = {registration_token}'
+                )
+                print(f'#{padded_index} error code: {error_code}')
 
 
 if __name__ == '__main__':
-    _send_by_lib()
+    send_user_notification()

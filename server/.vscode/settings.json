@@ -22,6 +22,14 @@
     "editor.defaultFormatter": "ms-python.autopep8",
     "editor.formatOnSave": true
   },
+  "cSpell.customDictionaries": {
+    "words": {
+      "name": "dependency",
+      "path": "${workspaceRoot}/dictionary/dependency.txt",
+      "description": "Words that appear in dependent SDKs and libraries",
+      "addWords": true
+    }
+  },
   "python.defaultInterpreterPath": "env/bin/python",
   "circleci.persistedProjectSelection": []
 }

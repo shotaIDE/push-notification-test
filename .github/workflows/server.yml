@@ -27,7 +27,9 @@ jobs:
         id: check-related-files
         uses: tj-actions/changed-files@40853de9f8ce2d6cfdc73c1b96f14e22ba44aec4 # v45
         with:
-          files: "server/**"
+          files: |
+            .github/**
+            server/**
   test:
     name: Test Server
     needs: check-impact
@@ -67,6 +69,31 @@ jobs:
         run: echo "${{ secrets.PYTEST_INI_BASE64 }}" | base64 -d > pytest.ini
       - name: Test
         run: pytest
+  code-spell:
+    name: Code spell
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    needs: check-impact
+    if: needs.check-impact.outputs.has-changed-related-files == 'true'
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: reviewdog/action-setup@3f401fe1d58fe77e10d665ab713057375e39b887 # v1
+        with:
+          reviewdog_version: latest
+      - name: Install CSpell
+        run: npm install -g cspell
+      - name: Check code spell
+        run: cspell '**/*.{md,py,sh}' > cspell.log
+      - name: Display code spell errors
+        if: failure()
+        run: cat cspell.log
+      - name: Run reviewdog
+        if: failure()
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: cat cspell.log | reviewdog -efm='%f:%l:%c - %m' -name='Code Spell Checker' -reporter='github-pr-review'
   build-no-need:
     name: Test Server (no need)
     needs: check-impact

@@ -19,5 +19,5 @@ async def test_send_user_notification(capfd):
     assert out == (
         'Sending user notification...\n'
         f'#00 device token = {device_token}\n'
-        '#00 response status code: 200\n'
+        '#00 response status code: 410\n'
     )

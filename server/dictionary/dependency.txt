@@ -1,3 +1,4 @@
+capfd
 dgst
 httpx
 iseconds

@@ -3,5 +3,6 @@
     { "name": "dependency", "path": "./dictionary/dependency.txt" }
   ],
   "dictionaries": ["dependency"],
+  "ignorePaths": ["/env"],
   "enabledLanguageIds": ["markdown", "python", "shellscript"]
 }

@@ -69,18 +69,31 @@ jobs:
         run: echo "${{ secrets.PYTEST_INI_BASE64 }}" | base64 -d > pytest.ini
       - name: Test
         run: pytest
-  spell-check:
+  code-spell:
     name: Spell check
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
     needs: check-impact
     if: needs.check-impact.outputs.has-changed-related-files == 'true'
     steps:
-      - uses: actions/checkout@v4
-      - uses: streetsidesoftware/cspell-action@v6
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: reviewdog/action-setup@3f401fe1d58fe77e10d665ab713057375e39b887 # v1
         with:
-          files: "**/*.{md,py,sh}"
-          root: server/
-          verbose: true
+          reviewdog_version: latest
+      - name: Install Code Spell Checker
+        run: npm install -g cspell
+      - name: Check code spell
+        run: cspell '**/*.{md,py,sh}' > cspell.log
+      - name: Display code spell errors
+        if: failure()
+        run: cat cspell.log
+      - name: Run reviewdog for Code Spell Checker
+        if: failure()
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: cat cspell.log | reviewdog -efm='%f:%l:%c - %m' -name='Code Spell Checker' -reporter='github-pr-review'
   build-no-need:
     name: Test Server (no need)
     needs: check-impact

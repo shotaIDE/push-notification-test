@@ -80,6 +80,7 @@ jobs:
         with:
           files: "**/*.{md,py,sh}"
           root: server/
+          verbose: true
   build-no-need:
     name: Test Server (no need)
     needs: check-impact

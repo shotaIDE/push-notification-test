@@ -72,7 +72,9 @@ jobs:
           timeout_minutes: 60
           max_attempts: 3
           retry_on: error
-          command: pytest
+          command: |
+            cd server/
+            pytest
   code-spell:
     name: Code spell
     runs-on: ubuntu-latest

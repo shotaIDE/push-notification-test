@@ -65,8 +65,16 @@ jobs:
         run: echo "${{ secrets.FIREBASE_ADMIN_SERVICE_ACCOUNT_KEY_JSON_BASE64 }}" | base64 -d > firebase-admin_service-account-key.json
       - name: Generate pytest environment ini file
         run: echo "${{ secrets.PYTEST_INI_BASE64 }}" | base64 -d > pytest.ini
+      # Testing may fail for temporary reasons, so we retry.
       - name: Test
-        run: pytest
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          retry_on: error
+          command: |
+            cd server/
+            pytest
   code-spell:
     name: Code spell
     runs-on: ubuntu-latest

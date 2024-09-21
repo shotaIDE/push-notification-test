@@ -47,7 +47,7 @@ def send_user_notification():
         ),
     )
 
-    response = messaging.send_each_for_multicast()
+    response = messaging.send_each_for_multicast(message)
 
     print(f'{response.success_count} messages were sent successfully.')
 

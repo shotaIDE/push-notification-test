@@ -11,7 +11,8 @@ def send_user_notification():
     print('Sending user notification...')
 
     SERVICE_ACCOUNT_KEY_JSON_FILE_PATH = os.environ.get(
-        'SERVICE_ACCOUNT_KEY_JSON_FILE_PATH')
+        'SERVICE_ACCOUNT_KEY_JSON_FILE_PATH'
+    )
     REGISTRATION_TOKEN = os.environ.get('REGISTRATION_TOKEN')
 
     project_credentials = credentials.Certificate(
@@ -23,37 +24,40 @@ def send_user_notification():
     current_datetime = datetime.now()
     current_datetime_string = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
 
-    message = messaging.MulticastMessage(
-        tokens=registration_tokens,
-        data={
-            'custom_data_key_1': 'custom_data_value_1',
-        },
-        notification=messaging.Notification(
-            title='Test Title (via FCM with Python)',
-            body=f'This user notification was sent at {
-                current_datetime_string}',
-        ),
-        android=messaging.AndroidConfig(
-            notification=messaging.AndroidNotification(
-                sound='default',
+    messages = [
+        messaging.Message(
+            token=token,
+            data={
+                'custom_data_key_1': 'custom_data_value_1',
+            },
+            notification=messaging.Notification(
+                title='Test Title (via FCM with Python)',
+                body=(
+                    'This user notification was sent '
+                    f'at {current_datetime_string}'
+                ),
             ),
-            ttl=timedelta(seconds=180)
-        ),
-        apns=messaging.APNSConfig(
-            # https://developer.apple.com/documentation/usernotifications/generating-a-remote-notification
-            payload=messaging.APNSPayload(
-                aps=messaging.Aps(sound='bingbong.aiff'),
+            android=messaging.AndroidConfig(
+                notification=messaging.AndroidNotification(
+                    sound='default',
+                ),
+                ttl=timedelta(seconds=180)
             ),
-        ),
-    )
+            apns=messaging.APNSConfig(
+                # https://developer.apple.com/documentation/usernotifications/generating-a-remote-notification
+                payload=messaging.APNSPayload(
+                    aps=messaging.Aps(sound='bingbong.aiff'),
+                ),
+            ),
+        ) for token in registration_tokens
+    ]
 
-    response = messaging.send_multicast(message)
+    results = messaging.send_all(messages)
 
-    print(f'{response.success_count} messages were sent successfully.')
+    print(f'{results.success_count} messages were sent successfully.')
 
-    if response.failure_count > 0:
-        responses = response.responses
-        for index, response in enumerate(responses):
+    if results.failure_count > 0:
+        for index, response in enumerate(results.responses):
             if not response.success:
                 padded_index = str(index).rjust(2, '0')
                 registration_token = registration_tokens[index]

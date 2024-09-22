@@ -9,7 +9,7 @@ exceptiongroup==1.2.2
 firebase-admin==6.5.0
 google-api-core==2.20.0
 google-api-python-client==2.146.0
-google-auth==2.34.0
+google-auth==2.35.0
 google-auth-httplib2==0.2.0
 google-cloud-core==2.4.1
 google-cloud-firestore==2.18.0

@@ -1,5 +1,5 @@
 anyio==4.6.2.post1
-CacheControl==0.14.0
+CacheControl==0.14.1
 cachetools==5.5.0
 certifi==2024.8.30
 cffi==1.17.1
